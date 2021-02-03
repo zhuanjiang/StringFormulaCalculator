@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringFormulaCalculator", "StringFormulaCalculator\StringFormulaCalculator.csproj", "{19540353-75DD-4FA7-90BC-D5A124B7A678}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{19540353-75DD-4FA7-90BC-D5A124B7A678}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19540353-75DD-4FA7-90BC-D5A124B7A678}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19540353-75DD-4FA7-90BC-D5A124B7A678}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19540353-75DD-4FA7-90BC-D5A124B7A678}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {95F578EA-1B79-4318-8213-9892629832A9}
+	EndGlobalSection
+EndGlobal
