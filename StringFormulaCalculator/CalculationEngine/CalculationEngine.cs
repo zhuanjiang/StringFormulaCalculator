@@ -8,16 +8,16 @@ namespace StringFormulaCalculator
     public class CalculationEngine
     {
         // EventHandler
-        public event EventHandler<DisplayFormulaEventArgs> FormulaUpdated;
+        public static event EventHandler<DisplayFormulaEventArgs> FormulaUpdated;
 
         // Main Function to Call
-        public double StartCalculate(string formula)
+        public static double Calculate(string sum)
         {
-            return BracketRecognition(formula);
+            return BracketRecognition(sum);
         }
 
         // String Formula Detection Function
-        private double BracketRecognition(string formula)
+        private static double BracketRecognition(string formula)
         {
             string removedWhiteSpaceFormula = formula.Replace(" ", string.Empty);
 
@@ -38,7 +38,7 @@ namespace StringFormulaCalculator
         }
 
 
-        private double BasicMathRecognition(string formula)
+        private static double BasicMathRecognition(string formula)
         {
             string removedWhiteSpaceFormula = formula.Replace(" ", string.Empty).Replace("(", string.Empty).Replace(")", string.Empty);
 
@@ -73,17 +73,21 @@ namespace StringFormulaCalculator
 
 
         // Event
-        protected virtual void OnFormulaUpdated(string updatedFormula)
+        private static void OnFormulaUpdated(string updatedFormula)
         {
             DisplayFormulaEventArgs e = new DisplayFormulaEventArgs();
             e.Formula = updatedFormula;
 
-            FormulaUpdated?.Invoke(this, e);
+            EventHandler<DisplayFormulaEventArgs> handler = FormulaUpdated;
+            if (handler != null)
+            {
+                handler(null, e);
+            }
         }
 
 
         // Math handler
-        private double DivisionAndMultiplicationOrderHandler(string divAndMulFormula)
+        private static double DivisionAndMultiplicationOrderHandler(string divAndMulFormula)
         {
             List<string> divAndMulOrders = new List<string>();
             char[] divAndMul = { '/', '*' };
@@ -128,7 +132,7 @@ namespace StringFormulaCalculator
             return previousVal;
         }
 
-        private double AdditionAndSubtractionOrderHandler(string addAndSubFormula)
+        private static double AdditionAndSubtractionOrderHandler(string addAndSubFormula)
         {
             List<string> addAndSubOrders = new List<string>();
             char[] addAndSub = { '+', '-' };
@@ -174,38 +178,38 @@ namespace StringFormulaCalculator
         }
 
         // Basic Math Method
-        private double Addition(double a, double b)
+        private static double Addition(double a, double b)
         {
             return a + b;
         }
 
-        private double Subtraction(double a, double b)
+        private static double Subtraction(double a, double b)
         {
             return a - b;
         }
 
-        private double Multiplication(double a, double b)
+        private static double Multiplication(double a, double b)
         {
             return a * b;
         }
 
-        private double Division(double a, double b)
+        private static double Division(double a, double b)
         {
             return a / b;
         }
 
         // Math Function
-        private double Absolute(double a)
+        private static double Absolute(double a)
         {
             return Math.Abs(a);
         }
 
-        private double BankerRounding(double a, int toDigit)
+        private static double BankerRounding(double a, int toDigit)
         {
             return Math.Round(a, toDigit);
         }
 
-        private double NormalRounding(double a, int toDigit)
+        private static double NormalRounding(double a, int toDigit)
         {
             return Math.Round(a, toDigit, MidpointRounding.AwayFromZero);
         }
