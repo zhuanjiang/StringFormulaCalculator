@@ -26,7 +26,7 @@ namespace StringFormulaCalculator
             while (removedWhiteSpaceFormula.LastIndexOf('(') != -1)
             {
                 int startIndex = removedWhiteSpaceFormula.LastIndexOf('(');
-                int endIndex = removedWhiteSpaceFormula.IndexOf(')');
+                int endIndex = removedWhiteSpaceFormula.IndexOf(')', startIndex);
                 int length = endIndex - startIndex + 1;
                 string toCalculateFormula = removedWhiteSpaceFormula.Substring(startIndex, length);
                 double calResult = BasicMathRecognition(toCalculateFormula);
@@ -105,7 +105,7 @@ namespace StringFormulaCalculator
             string[] splitNumbers = divAndMulFormula.Split(divAndMul, StringSplitOptions.RemoveEmptyEntries);
             double previousVal = 0;
 
-            for(int n = 0; n < divAndMulOrders.Count; n++)
+            for (int n = 0; n < divAndMulOrders.Count; n++)
             {
                 double a, b = 0;
                 if (n == 0)
@@ -129,7 +129,14 @@ namespace StringFormulaCalculator
                 }
             }
 
-            return previousVal;
+            if (divAndMulOrders.Count == 0)
+            {
+                return double.Parse(divAndMulFormula);
+            }
+            else
+            {
+                return previousVal;
+            }
         }
 
         private static double AdditionAndSubtractionOrderHandler(string addAndSubFormula)
@@ -138,16 +145,28 @@ namespace StringFormulaCalculator
             char[] addAndSub = { '+', '-' };
             string toCalculateFormula = addAndSubFormula;
 
-            // Collect Addition and Subtraction Order
-            while (toCalculateFormula.IndexOfAny(addAndSub) != -1)
+            // Negative and Positive Handling
+            toCalculateFormula = toCalculateFormula.Replace("+-", "-").Replace("-+", "-").Replace("--", "+");
+
+            // First Negative Handling
+            StringBuilder sb = new StringBuilder(toCalculateFormula);
+            if (sb[0] == '-')
             {
-                int charIndex = toCalculateFormula.IndexOfAny(addAndSub);
-                addAndSubOrders.Add(toCalculateFormula.Substring(charIndex, 1));
-                toCalculateFormula = toCalculateFormula.Substring(charIndex + 1);
+                sb[0] = 'N';
+            }
+            toCalculateFormula = sb.ToString();
+
+            // Collect Addition and Subtraction Order
+            string getFormulaOrder = toCalculateFormula;
+            while (getFormulaOrder.IndexOfAny(addAndSub) != -1)
+            {
+                int charIndex = getFormulaOrder.IndexOfAny(addAndSub);
+                addAndSubOrders.Add(getFormulaOrder.Substring(charIndex, 1));
+                getFormulaOrder = getFormulaOrder.Substring(charIndex + 1);
             }
 
             // Calculate based on Order
-            string[] splitNumbers = addAndSubFormula.Split(addAndSub, StringSplitOptions.RemoveEmptyEntries);
+            string[] splitNumbers = toCalculateFormula.Split(addAndSub, StringSplitOptions.RemoveEmptyEntries);
             double previousVal = 0;
 
             for (int n = 0; n < addAndSubOrders.Count; n++)
@@ -155,7 +174,7 @@ namespace StringFormulaCalculator
                 double a, b = 0;
                 if (n == 0)
                 {
-                    a = double.Parse(splitNumbers[n]);
+                    a = double.Parse(splitNumbers[n].Replace("N", "-"));
                     b = double.Parse(splitNumbers[n + 1]);
                 }
                 else
@@ -174,7 +193,14 @@ namespace StringFormulaCalculator
                 }
             }
 
-            return previousVal;
+            if(addAndSubOrders.Count == 0)
+            {
+                return double.Parse(addAndSubFormula);
+            }
+            else
+            {
+                return previousVal;
+            }
         }
 
         // Basic Math Method
@@ -196,22 +222,6 @@ namespace StringFormulaCalculator
         private static double Division(double a, double b)
         {
             return a / b;
-        }
-
-        // Math Function
-        private static double Absolute(double a)
-        {
-            return Math.Abs(a);
-        }
-
-        private static double BankerRounding(double a, int toDigit)
-        {
-            return Math.Round(a, toDigit);
-        }
-
-        private static double NormalRounding(double a, int toDigit)
-        {
-            return Math.Round(a, toDigit, MidpointRounding.AwayFromZero);
         }
     }
 }
