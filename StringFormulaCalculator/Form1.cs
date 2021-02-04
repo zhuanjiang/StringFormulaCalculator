@@ -11,21 +11,30 @@ namespace StringFormulaCalculator
 {
     public partial class Form1 : Form
     {
+         static CalculationEngine calEngine;
+
         public Form1()
         {
             InitializeComponent();
+            calEngine = new CalculationEngine();
+            calEngine.FormulaUpdated += onFormulaUpdate;
         }
 
         private void btnCalculate_Click(object sender, EventArgs e)
         {
+            rtbResult.Text = string.Empty;
             double result = Calculate(txtStringParameter.Text);
-            rtbResult.Text = result.ToString();
+            rtbResult.AppendText("Answer is " + result.ToString());
         }
 
         public static double Calculate(string sum)
         {
-            // Your code starts here
-            return 0.0;
+            return calEngine.StartCalculate(sum);
+        }
+
+        private void onFormulaUpdate(object sender, DisplayFormulaEventArgs e)
+        {
+            rtbResult.AppendText(e.Formula + "\n");
         }
     }
 }
