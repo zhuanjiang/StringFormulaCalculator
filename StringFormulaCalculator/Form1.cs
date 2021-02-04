@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace StringFormulaCalculator
@@ -27,6 +28,20 @@ namespace StringFormulaCalculator
         private void onFormulaUpdate(object sender, DisplayFormulaEventArgs e)
         {
             rtbResult.AppendText(e.Formula + "\n");
+        }
+
+        private void txtStringParameter_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (Char.IsDigit(e.KeyChar) || Char.IsWhiteSpace(e.KeyChar) || Char.IsControl(e.KeyChar) ||
+                e.KeyChar == '+' || e.KeyChar == '-' || e.KeyChar == '*' || e.KeyChar == '/' ||
+                e.KeyChar == '(' || e.KeyChar == ')' || e.KeyChar == '.')
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                e.Handled = true;
+            }
         }
     }
 }

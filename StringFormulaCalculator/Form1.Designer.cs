@@ -65,6 +65,7 @@ namespace StringFormulaCalculator
             this.txtStringParameter.Size = new System.Drawing.Size(574, 26);
             this.txtStringParameter.TabIndex = 1;
             this.txtStringParameter.Text = "10 - ( 2 + 3 * ( 7 - 5 ) )";
+            this.txtStringParameter.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtStringParameter_KeyPress);
             // 
             // rtbResult
             // 
